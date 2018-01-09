@@ -1,0 +1,72 @@
+def nowDate = new Date()
+def nowFormattedDate = nowDate.format("yyyy-MM-dd/HH:mm:ss")
+def vendorName = "greetgo!"
+def ggRepo = System.getenv('GG_REPO')
+
+allprojects {
+  apply plugin: 'java'
+  apply plugin: 'idea'
+  apply plugin: 'maven'
+  
+  version = '0.0.1'
+
+  sourceCompatibility = 1.8
+  targetCompatibility = 1.8
+
+  group = "kz.greetgo.glazga"
+
+  eclipse.project.natures 'org.springsource.ide.eclipse.gradle.core.nature'
+  compileJava.options.debugOptions.debugLevel = "source,lines,vars"
+  compileJava.options.encoding = "UTF-8"
+  compileTestJava.options.debugOptions.debugLevel = "source,lines,vars"
+  compileTestJava.options.encoding = "UTF-8"
+
+}
+
+subprojects {
+  project.eclipse.classpath.file.whenMerged { cp ->
+    if (project.hasProperty("sourceCompatibility")) {
+      cp.entries.findAll { it.path.contains('JRE_CONTAINER') }.each {
+        it.path += "/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/" +
+            "JavaSE-$project.sourceCompatibility"
+      }
+    }
+  }
+
+  repositories {
+    mavenLocal()
+    if (ggRepo != null && ggRepo.length() > 0) maven { url ggRepo }
+    mavenCentral()
+  }
+  
+  dependencies {
+    compile 'org.slf4j:slf4j-api:1.7.22'
+    
+    testCompile 'org.testng:testng:6.5.1'
+    testCompile 'org.easytesting:fest-assert-core:2.0M10'
+  }
+
+  compileJava.options.encoding = "UTF-8"
+  compileTestJava.options.encoding = "UTF-8"
+
+  jar {
+    manifest {
+      attributes 'Implementation-Title': project.name
+      attributes 'Implementation-Version': version
+      attributes 'Implementation-Vendor': "greetgo!"
+      attributes 'Created-By': System.getProperty("user.name")
+      attributes 'Created-At': new Date().format("yyyy-MM-dd/HH:mm:ss")
+    }
+  }
+
+  sourceSets.main.java.srcDirs = ["src", "src_resources"]
+  sourceSets.main.resources.srcDirs = ["src", "src_resources"]
+  sourceSets.main.output.classesDir = "build/main_classes"
+  sourceSets.main.output.resourcesDir = "build/main_resources"
+  sourceSets.test.java.srcDirs = ["test_src", "test_src_resources"]
+  sourceSets.test.resources.srcDirs = ["test_src", "test_src_resources"]
+  sourceSets.test.output.classesDir = "build/test_classes"
+  sourceSets.test.output.resourcesDir = "build/test_resources"
+
+  test { useTestNG() }
+}
