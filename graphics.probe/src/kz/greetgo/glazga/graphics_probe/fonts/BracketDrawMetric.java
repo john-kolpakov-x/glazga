@@ -119,7 +119,8 @@ public class BracketDrawMetric {
     GlyphVector glyphVector = g.getFont().createGlyphVector(g.getFontRenderContext(), s.toString());
     for (int i = 0, n = glyphVector.getNumGlyphs(); i < n; i++) {
       Shape shape = glyphVector.getGlyphOutline(i);
-      glyphList.add(new Glyph(shape, shape.getBounds2D()));
+      Rectangle2D rect = glyphVector.getGlyphLogicalBounds(i).getBounds2D();
+      glyphList.add(new Glyph(shape, rect));
     }
 
     glyphList.forEach(Glyph::killXY);
