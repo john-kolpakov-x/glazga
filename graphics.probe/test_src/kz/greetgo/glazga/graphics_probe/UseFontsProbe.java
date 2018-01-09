@@ -3,9 +3,7 @@ package kz.greetgo.glazga.graphics_probe;
 import kz.greetgo.glazga.graphics_probe.fonts.Fonts;
 
 import javax.imageio.ImageIO;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -64,6 +62,9 @@ public class UseFontsProbe {
 //        Shape go = glyphVector1.getGlyphVisualBounds(0);
         Shape go = glyphVector1.getGlyphLogicalBounds(0);
         g.draw(tx1.createTransformedShape(go));
+        g.draw(go.getBounds2D());
+        Rectangle2D bounds2D = go.getBounds2D();
+        System.out.println(bounds2D);
       }
       //2
       {

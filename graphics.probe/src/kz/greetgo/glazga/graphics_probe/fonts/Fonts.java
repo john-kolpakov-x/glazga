@@ -1,9 +1,6 @@
 package kz.greetgo.glazga.graphics_probe.fonts;
 
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -13,8 +10,12 @@ public class Fonts {
 
   public void applyHints(Graphics2D g) {
     g.setRenderingHint(
-      RenderingHints.KEY_TEXT_ANTIALIASING,
-      RenderingHints.VALUE_TEXT_ANTIALIAS_ON
+        RenderingHints.KEY_TEXT_ANTIALIASING,
+        RenderingHints.VALUE_TEXT_ANTIALIAS_ON
+    );
+    g.setRenderingHint(
+        RenderingHints.KEY_ANTIALIASING,
+        RenderingHints.VALUE_ANTIALIAS_ON
     );
   }
 
@@ -66,7 +67,7 @@ public class Fonts {
 
     public BracketDrawMetric bracketDrawMetric() {
       if (bracketDrawMetric != null) return bracketDrawMetric;
-      BracketDrawMetric x = new BracketDrawMetric(font(100));
+      BracketDrawMetric x = new BracketDrawMetric(font(300));
       return bracketDrawMetric = x;
     }
   }
