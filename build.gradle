@@ -7,6 +7,7 @@ allprojects {
   apply plugin: 'java'
   apply plugin: 'idea'
   apply plugin: 'maven'
+  apply plugin: 'eclipse'
   
   version = '0.0.1'
 
@@ -53,9 +54,9 @@ subprojects {
     manifest {
       attributes 'Implementation-Title': project.name
       attributes 'Implementation-Version': version
-      attributes 'Implementation-Vendor': "greetgo!"
+      attributes 'Implementation-Vendor': vendorName
       attributes 'Created-By': System.getProperty("user.name")
-      attributes 'Created-At': new Date().format("yyyy-MM-dd/HH:mm:ss")
+      attributes 'Created-At': nowFormattedDate
     }
   }
 
