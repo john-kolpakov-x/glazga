@@ -1,5 +1,7 @@
 package kz.greetgo.glazga.graphics_probe.fonts;
 
+import kz.greetgo.glazga.graphics_probe.metric.DrawMetric;
+
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
@@ -63,12 +65,12 @@ public class Fonts {
       return font.deriveFont(size);
     }
 
-    private BracketDrawMetric bracketDrawMetric;
+    private DrawMetric drawMetric;
 
-    public BracketDrawMetric bracketDrawMetric() {
-      if (bracketDrawMetric != null) return bracketDrawMetric;
-      BracketDrawMetric x = new BracketDrawMetric(font(300));
-      return bracketDrawMetric = x;
+    public DrawMetric drawMetric() {
+      if (drawMetric != null) return drawMetric;
+      DrawMetric x = new DrawMetric(font(300));
+      return drawMetric = x;
     }
   }
 

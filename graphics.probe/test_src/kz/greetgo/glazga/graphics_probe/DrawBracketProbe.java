@@ -1,6 +1,7 @@
 package kz.greetgo.glazga.graphics_probe;
 
-import kz.greetgo.glazga.graphics_probe.fonts.BracketDrawMetric;
+import kz.greetgo.glazga.graphics_probe.metric.Bracket;
+import kz.greetgo.glazga.graphics_probe.metric.DrawMetric;
 import kz.greetgo.glazga.graphics_probe.fonts.Fonts;
 import kz.greetgo.glazga.graphics_probe.model.FigArea;
 
@@ -10,11 +11,11 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-import static kz.greetgo.glazga.graphics_probe.fonts.BracketDrawMetric.Bracket.CURLY;
-import static kz.greetgo.glazga.graphics_probe.fonts.BracketDrawMetric.Bracket.PARENTHESIS;
-import static kz.greetgo.glazga.graphics_probe.fonts.BracketDrawMetric.Bracket.SQUARE;
-import static kz.greetgo.glazga.graphics_probe.fonts.BracketDrawMetric.Side.LEFT;
-import static kz.greetgo.glazga.graphics_probe.fonts.BracketDrawMetric.Side.RIGHT;
+import static kz.greetgo.glazga.graphics_probe.metric.Bracket.CURLY;
+import static kz.greetgo.glazga.graphics_probe.metric.Bracket.PARENTHESIS;
+import static kz.greetgo.glazga.graphics_probe.metric.Bracket.SQUARE;
+import static kz.greetgo.glazga.graphics_probe.metric.BracketSide.LEFT;
+import static kz.greetgo.glazga.graphics_probe.metric.BracketSide.RIGHT;
 
 public class DrawBracketProbe {
   public static void main(String[] args) throws Exception {
@@ -46,8 +47,8 @@ public class DrawBracketProbe {
       }
 
       {
-        g.setColor(new Color(0xD10D0A));
-        FigArea area = new FigArea(180, 80, 40);
+        g.setColor(new Color(0x44CED1));
+        FigArea area = new FigArea(180, 10, 90);
         paintBracketsAround(g, area, 700, 340, CURLY);
       }
 
@@ -60,13 +61,13 @@ public class DrawBracketProbe {
   }
 
   @SuppressWarnings("UnnecessaryLocalVariable")
-  private void paintBracketsAround(Graphics2D g, FigArea area, float x, float y, BracketDrawMetric.Bracket br) {
+  private void paintBracketsAround(Graphics2D g, FigArea area, float x, float y, Bracket br) {
     drawFigAreaBounds(g, area, x, y);
     point(g, x, y, 2);
 
-    BracketDrawMetric drawMetric = Fonts.With.Merriweather_Light.bracketDrawMetric();
-    BracketDrawMetric.BracketDrawer bracketLeft = drawMetric.drawerFor(br, LEFT);
-    BracketDrawMetric.BracketDrawer bracketRight = drawMetric.drawerFor(br, RIGHT);
+    DrawMetric drawMetric = Fonts.With.Merriweather_Light.drawMetric();
+    DrawMetric.BracketDrawer bracketLeft = drawMetric.drawerFor(br, LEFT);
+    DrawMetric.BracketDrawer bracketRight = drawMetric.drawerFor(br, RIGHT);
 
     float widthLeft = bracketLeft.widthForHeight(area.height());
     float widthRight = bracketRight.widthForHeight(area.height());

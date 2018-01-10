@@ -37,9 +37,17 @@ public class FigArea {
   @Override
   public String toString() {
     return "FigArea{" +
-        "width=" + width +
-        ", top=" + top +
-        ", bottom=" + bottom +
-        '}';
+      "width=" + width +
+      ", top=" + top +
+      ", bottom=" + bottom +
+      '}';
+  }
+
+  public int topInt() {
+    return Math.round(top);
+  }
+
+  public int widthInt() {
+    return Math.round(width);
   }
 }
