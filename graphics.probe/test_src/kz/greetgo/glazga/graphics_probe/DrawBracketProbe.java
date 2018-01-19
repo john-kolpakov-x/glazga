@@ -1,19 +1,19 @@
 package kz.greetgo.glazga.graphics_probe;
 
+import kz.greetgo.glazga.graphics_probe.fonts.Fonts;
 import kz.greetgo.glazga.graphics_probe.metric.Bracket;
 import kz.greetgo.glazga.graphics_probe.metric.DrawMetric;
-import kz.greetgo.glazga.graphics_probe.fonts.Fonts;
 import kz.greetgo.glazga.graphics_probe.model.FigArea;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-import static kz.greetgo.glazga.graphics_probe.metric.Bracket.CURLY;
-import static kz.greetgo.glazga.graphics_probe.metric.Bracket.PARENTHESIS;
-import static kz.greetgo.glazga.graphics_probe.metric.Bracket.SQUARE;
+import static kz.greetgo.glazga.graphics_probe.metric.Bracket.*;
 import static kz.greetgo.glazga.graphics_probe.metric.BracketSide.LEFT;
 import static kz.greetgo.glazga.graphics_probe.metric.BracketSide.RIGHT;
 
@@ -63,7 +63,7 @@ public class DrawBracketProbe {
   @SuppressWarnings("UnnecessaryLocalVariable")
   private void paintBracketsAround(Graphics2D g, FigArea area, float x, float y, Bracket br) {
     drawFigAreaBounds(g, area, x, y);
-    point(g, x, y, 2);
+    DrawUtil.point(g, x, y, 2);
 
     DrawMetric drawMetric = Fonts.With.Merriweather_Light.drawMetric();
     DrawMetric.BracketDrawer bracketLeft = drawMetric.drawerFor(br, LEFT);
@@ -81,13 +81,6 @@ public class DrawBracketProbe {
     g.fill(shapeRight);
 
 
-  }
-
-  @SuppressWarnings("SameParameterValue")
-  private void point(Graphics2D g, float x, float y, int r) {
-    for (int Y = Math.round(y) - r, Y2 = Math.round(y) + r; Y <= Y2; Y++) {
-      g.drawLine(Math.round(x) - r, Y, Math.round(x) + r, Y);
-    }
   }
 
   @SuppressWarnings("SameParameterValue")

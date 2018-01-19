@@ -67,11 +67,10 @@ public class DrawMetric {
   }
 
   private final List<Glyph> glyphList = new ArrayList<>();
-  private final BufferedImage image;
   private final Graphics2D graphics;
 
   public DrawMetric(Font font) {
-    image = new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB);
+    BufferedImage image = new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB);
     graphics = image.createGraphics();
     graphics.setFont(font);
 
