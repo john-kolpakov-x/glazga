@@ -1,6 +1,6 @@
 package kz.greetgo.glazga.graphics_probe.metric;
 
-import kz.greetgo.glazga.graphics_probe.display.ShapeArea;
+import kz.greetgo.glazga.graphics_probe.model.ShapeArea;
 import kz.greetgo.glazga.graphics_probe.model.FigArea;
 
 import java.awt.Font;
@@ -106,5 +106,15 @@ public class DrawMetric {
     tx.translate(-bounds.getMinX(), -bounds.getMinY());
 
     return new ShapeArea(tx.createTransformedShape(glyphOutline), area);
+  }
+
+  public float levelHeight(float baseHeight, int level) {
+    if (level >= 1) while (level-- > 1) {
+      baseHeight = baseHeight * 0.8f;
+    }
+    else while (level++ < 1) {
+      baseHeight = baseHeight * 1.2f;
+    }
+    return baseHeight;
   }
 }

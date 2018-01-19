@@ -1,6 +1,4 @@
-package kz.greetgo.glazga.graphics_probe.display;
-
-import kz.greetgo.glazga.graphics_probe.model.FigArea;
+package kz.greetgo.glazga.graphics_probe.model;
 
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
