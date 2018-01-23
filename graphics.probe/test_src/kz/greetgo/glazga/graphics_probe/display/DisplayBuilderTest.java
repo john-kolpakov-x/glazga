@@ -22,7 +22,8 @@ public class DisplayBuilderTest {
 
   @Test
   public void str() throws Exception {
-    DisplayBuilder builder = new DisplayBuilder(drawMetric, () -> 80);
+    DisplayBuilder builder = new DisplayBuilder(drawMetric).baseHeight(() -> 80);
+
 
     BufferedImage image = new BufferedImage(1000, 700, BufferedImage.TYPE_INT_ARGB);
 
@@ -48,7 +49,7 @@ public class DisplayBuilderTest {
 
   @Test
   public void div() throws Exception {
-    DisplayBuilder builder = new DisplayBuilder(drawMetric, () -> 80);
+    DisplayBuilder builder = new DisplayBuilder(drawMetric).baseHeight(() -> 80);
 
     BufferedImage image = new BufferedImage(1000, 700, BufferedImage.TYPE_INT_ARGB);
 

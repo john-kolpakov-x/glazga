@@ -12,14 +12,13 @@ import java.awt.geom.Rectangle2D;
 import java.util.Objects;
 
 public class DisplayBuilder {
-  final DrawMetric drawMetric;
+  private final DrawMetric drawMetric;
   private FloatSupplier baseHeight;
 
-  public DisplayBuilder(DrawMetric drawMetric, FloatSupplier baseHeight) {
+  public DisplayBuilder(DrawMetric drawMetric) {
     Objects.requireNonNull(drawMetric, "drawMetric == null");
-    Objects.requireNonNull(baseHeight, "baseHeight == null");
     this.drawMetric = drawMetric;
-    this.baseHeight = baseHeight;
+    this.baseHeight = () -> 14f;
   }
 
   public DisplayBuilder baseHeight(FloatSupplier baseHeight) {
