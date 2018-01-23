@@ -1,12 +1,11 @@
 package kz.greetgo.glazga.graphics_probe.metric;
 
-import kz.greetgo.glazga.graphics_probe.model.ShapeArea;
 import kz.greetgo.glazga.graphics_probe.model.FigArea;
+import kz.greetgo.glazga.graphics_probe.model.ShapeArea;
 
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.font.GlyphVector;
+import java.awt.font.LineMetrics;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -116,5 +115,33 @@ public class DrawMetric {
       baseHeight = baseHeight * 1.2f;
     }
     return baseHeight;
+  }
+
+  public HeightMetric heightMetric(float height) {
+    LineMetrics lineMetrics = graphics.getFontMetrics().getLineMetrics("A", graphics);
+
+    float itMiddleLine = Math.abs(lineMetrics.getStrikethroughOffset());
+    float itMiddleThickness = lineMetrics.getStrikethroughThickness();
+    float itHeight = lineMetrics.getHeight();
+    float itLineGap = lineMetrics.getLeading();
+
+//    if (itLineGap < 0.00001f) {
+//      itLineGap = itHeight * 0.1f;
+//    }
+
+    float itUnderlineOffset = lineMetrics.getUnderlineOffset();
+    float itUnderlineThickness = lineMetrics.getUnderlineThickness();
+
+    float k = height / itHeight;
+
+    {
+      HeightMetric ret = new HeightMetric();
+      ret.middleLine = itMiddleLine * k;
+      ret.middleThickness = itMiddleThickness * k;
+      ret.lineGap = itLineGap * k;
+      ret.underlineOffset = itUnderlineOffset * k;
+      ret.underlineThickness = itUnderlineThickness * k;
+      return ret;
+    }
   }
 }

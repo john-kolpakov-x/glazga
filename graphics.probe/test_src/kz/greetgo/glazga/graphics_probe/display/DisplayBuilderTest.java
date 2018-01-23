@@ -6,8 +6,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import javax.imageio.ImageIO;
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -42,7 +41,43 @@ public class DisplayBuilderTest {
       g.dispose();
     }
 
-    File file = new File("build/DisplayBuilderTest_str_" + str + ".png");
+    File file = new File("build/" + getClass().getSimpleName() + "_str_" + str + ".png");
+    file.getParentFile().mkdirs();
+    ImageIO.write(image, "png", file);
+  }
+
+  @Test
+  public void div() throws Exception {
+    DisplayBuilder builder = new DisplayBuilder(drawMetric, () -> 80);
+
+    BufferedImage image = new BufferedImage(1000, 700, BufferedImage.TYPE_INT_ARGB);
+
+    {
+      Graphics2D g = image.createGraphics();
+      Fonts.get().applyHints(g);
+
+      g.setColor(new Color(0xFFFFFF));
+      g.fill(new Rectangle2D.Float(0, 0, image.getWidth(), image.getHeight()));
+
+      g.setColor(new Color(0x3636FF));
+
+      Display a = builder.str("a + ", 1);
+      Display top = builder.str("top", 1);
+      Display bottom = builder.str("bottom", 1);
+
+      Display div = builder.div(top, bottom, 1);
+
+      Display main = builder.row(a, div);
+      main.paint(g, 100, 200);
+
+      g.setColor(new Color(0x2BF435));
+      builder.structure(a).paint(g, 100, 200);
+      builder.structure(main).paint(g, 100, 200);
+
+      g.dispose();
+    }
+
+    File file = new File("build/" + getClass().getSimpleName() + "_div.png");
     file.getParentFile().mkdirs();
     ImageIO.write(image, "png", file);
   }
