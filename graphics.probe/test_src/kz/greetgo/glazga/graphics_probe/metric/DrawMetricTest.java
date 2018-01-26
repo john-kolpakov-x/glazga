@@ -22,7 +22,6 @@ public class DrawMetricTest {
 
   private DrawMetric drawMetric;
 
-
   @BeforeMethod
   public void create_drawMetric() throws Exception {
     drawMetric = Fonts.With.Merriweather_Light.drawMetric();
