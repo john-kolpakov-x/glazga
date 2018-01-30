@@ -1,6 +1,7 @@
 package kz.greetgo.glazga.graphics_probe.display;
 
 import kz.greetgo.glazga.graphics_probe.fonts.Fonts;
+import kz.greetgo.glazga.graphics_probe.metric.Bracket;
 import kz.greetgo.glazga.graphics_probe.metric.DrawMetric;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -106,12 +107,12 @@ public class DisplayBuilderTest {
       drawPointTo(g, x, y);
 
       Display main = builder
-          .power(center)
-          .left(1, +0.8f, power)
-          .top(1, 0, power)
-          .bottom(1, 0, power)
-          .right(1, -0.8f, power)
-          .create();
+        .power(center)
+        .left(1, +0.8f, power)
+        .top(1, 0, power)
+        .bottom(1, 0, power)
+        .right(1, -0.8f, power)
+        .create();
 
       g.setColor(new Color(0x2BF435));
       builder.structure(main).paint(g, x, y);
@@ -138,5 +139,44 @@ public class DisplayBuilderTest {
       g.setColor(color);
       return g;
     };
+  }
+
+  @Test
+  public void brackets() throws Exception {
+    DisplayBuilder builder = new DisplayBuilder(drawMetric).baseHeight(() -> 80);
+
+    BufferedImage image = new BufferedImage(1000, 700, BufferedImage.TYPE_INT_ARGB);
+
+    {
+      Graphics2D g = image.createGraphics();
+      Fonts.get().applyHints(g);
+
+      g.setColor(new Color(0xFFFFFF));
+      g.fill(new Rectangle2D.Float(0, 0, image.getWidth(), image.getHeight()));
+
+      g.setColor(new Color(0x3636FF));
+
+      Display a = builder.str("a + ", 1);
+      Display top = builder.str("top", 1);
+      Display bottom = builder.str("bottom", 1);
+
+      Display div = builder.div(top, bottom, 1);
+
+      float x = 100, y = 200;
+
+      Display a_div = builder.row(a, div);
+
+      Display main = builder.brackets(a_div, Bracket.SQUARE);
+      main.paint(g, x, y);
+
+      g.setColor(new Color(0x2BF435));
+      builder.structure(main).paint(g, x, y);
+
+      g.dispose();
+    }
+
+    File file = new File("build/" + getClass().getSimpleName() + "_brackets.png");
+    file.getParentFile().mkdirs();
+    ImageIO.write(image, "png", file);
   }
 }

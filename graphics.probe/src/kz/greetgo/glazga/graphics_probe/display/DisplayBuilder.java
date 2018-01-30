@@ -1,5 +1,6 @@
 package kz.greetgo.glazga.graphics_probe.display;
 
+import kz.greetgo.glazga.graphics_probe.metric.Bracket;
 import kz.greetgo.glazga.graphics_probe.metric.DrawMetric;
 import kz.greetgo.glazga.graphics_probe.model.FigArea;
 import kz.greetgo.glazga.graphics_probe.util.FloatSupplier;
@@ -76,5 +77,13 @@ public class DisplayBuilder {
   public _PowerBuilder power(Display center) {
     Objects.requireNonNull(center);
     return new _PowerBuilder(null, new _PowerBuilder.SideRowDisplay(null, 0, center), baseHeight);
+  }
+
+  public Display brackets(Display in, Bracket bracket, Function<Graphics2D, Graphics2D> gp) {
+    return new _DisplayBrackets(in, bracket, drawMetric, gp);
+  }
+
+  public Display brackets(Display in, Bracket bracket) {
+    return brackets(in, bracket, Function.identity());
   }
 }

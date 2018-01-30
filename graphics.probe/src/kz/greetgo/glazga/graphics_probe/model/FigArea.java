@@ -20,6 +20,10 @@ public class FigArea {
     this((float) width, (float) top, (float) bottom);
   }
 
+  public FigArea(FigArea area) {
+    this(area.width, area.top, area.bottom);
+  }
+
   public float height() {
     return top + bottom;
   }
@@ -49,5 +53,20 @@ public class FigArea {
 
   public int widthInt() {
     return Math.round(width);
+  }
+
+  public FigArea setWidth(float newWidth) {
+    width = newWidth;
+    return this;
+  }
+
+  public FigArea setTop(float newTop) {
+    top = newTop;
+    return this;
+  }
+
+  public FigArea setBottom(float newBottom) {
+    bottom = newBottom;
+    return this;
   }
 }
