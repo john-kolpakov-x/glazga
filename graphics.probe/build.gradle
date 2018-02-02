@@ -1,6 +1,15 @@
-
 dependencies {
-  
-  
-  
+
+
+}
+
+
+task asd(type: JavaExec) {
+//  ext.genDir = "${project.buildDir}/generated/bean_container_impl"
+//  dependsOn autoimplJar
+
+  main = 'kz.greetgo.glazga.graphics_probe.forms.ProbeEvents'
+  args = []
+
+  classpath { [sourceSets.test.runtimeClasspath,] }
 }
