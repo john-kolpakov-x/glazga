@@ -1,4 +1,4 @@
-package kz.greetgo.glazga.graphics_probe;
+package kz.greetgo.glazga.graphics_probe.util;
 
 import java.awt.Graphics2D;
 

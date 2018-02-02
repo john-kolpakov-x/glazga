@@ -1,6 +1,6 @@
 package kz.greetgo.glazga.graphics_probe.metric;
 
-import kz.greetgo.glazga.graphics_probe.DrawUtil;
+import kz.greetgo.glazga.graphics_probe.util.DrawUtil;
 import kz.greetgo.glazga.graphics_probe.model.ShapeArea;
 import kz.greetgo.glazga.graphics_probe.fonts.Fonts;
 import org.testng.annotations.BeforeMethod;

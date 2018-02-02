@@ -4,6 +4,7 @@ import kz.greetgo.glazga.graphics_probe.fonts.Fonts;
 import kz.greetgo.glazga.graphics_probe.metric.Bracket;
 import kz.greetgo.glazga.graphics_probe.metric.DrawMetric;
 import kz.greetgo.glazga.graphics_probe.model.FigArea;
+import kz.greetgo.glazga.graphics_probe.util.DrawUtil;
 
 import javax.imageio.ImageIO;
 import java.awt.Color;
