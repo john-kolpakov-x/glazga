@@ -1,0 +1,9 @@
+Var id s172g3y4, x 10, y 200 {
+  plus id s67s67 {
+    var id 2131, name a {}
+    div id 43254 {
+      const id 32143, value 1 {}
+      var id 432524, name bottom {}
+    }
+  }
+}
