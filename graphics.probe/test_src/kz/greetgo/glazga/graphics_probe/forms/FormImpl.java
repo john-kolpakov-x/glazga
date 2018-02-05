@@ -1,5 +1,8 @@
 package kz.greetgo.glazga.graphics_probe.forms;
 
+import kz.greetgo.glazga.graphics_probe.desk.Box;
+import kz.greetgo.glazga.graphics_probe.desk.Desk;
+import kz.greetgo.glazga.graphics_probe.desk.DeskImpl;
 import kz.greetgo.glazga.graphics_probe.display.Display;
 import kz.greetgo.glazga.graphics_probe.display.DisplayBuilder;
 import kz.greetgo.glazga.graphics_probe.fonts.Fonts;
@@ -16,8 +19,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 public class FormImpl implements Form {
-  final DrawMetric drawMetric = Fonts.With.Merriweather_Light.drawMetric();
-  final DisplayBuilder builder = new DisplayBuilder(drawMetric).baseHeight(() -> 80);
 
   private final HandlerList repaintHandlers = new HandlerList();
 
@@ -26,6 +27,8 @@ public class FormImpl implements Form {
   }
 
   MouseMove mouseMoved = null;
+
+  Desk desk = new DeskImpl();
 
   @Override
   public void goEvent(Event event) {
@@ -48,10 +51,6 @@ public class FormImpl implements Form {
     g.setColor(new Color(0x00D200));
     g.drawRect(10, 10, Math.round(width - 20), Math.round(height - 20));
 
-    g.setColor(new Color(0xAE2CBD));
-    Display str = builder.str("Привет мир!!!", 1);
-    str.paint(g, 100, 100);
-
     {
       MouseMove mouseMoved = this.mouseMoved;
       if (mouseMoved != null) {
@@ -60,5 +59,16 @@ public class FormImpl implements Form {
       }
     }
 
+    {
+      Box rootBox = desk.getRootBox(width, height);
+      if (rootBox != null) {
+        {
+          MouseMove mouseMoved = this.mouseMoved;
+          desk.setOver(mouseMoved == null ? null : rootBox.findAt(mouseMoved.x, mouseMoved.y));
+        }
+
+        rootBox.paint(g);
+      }
+    }
   }
 }
