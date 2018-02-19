@@ -1,5 +1,6 @@
 package kz.greetgo.glazga.graphics_probe.desk.tag;
 
+import kz.greetgo.glazga.graphics_probe.desk.Box;
 import kz.greetgo.glazga.graphics_probe.util.UtilIO;
 
 import java.io.IOException;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class DocReader {
 
-  private static class MyDoc implements Doc {
+  static class MyDoc implements Doc {
 
     class Tag1 implements Tag {
       final String name;
@@ -130,6 +131,11 @@ public class DocReader {
     @Override
     public List<Tag> roots() {
       return top.children();
+    }
+
+    @Override
+    public Box boxing() {
+      return new DocBoxing(this).boxing();
     }
 
     @Override

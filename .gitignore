@@ -16,3 +16,4 @@ gwt-unitCache/
 *.iws
 *.out
 out/
+/venv/
