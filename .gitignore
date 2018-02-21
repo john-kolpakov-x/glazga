@@ -16,4 +16,6 @@ gwt-unitCache/
 *.iws
 *.out
 out/
+/.ideaDataSources/
+/dataSources/
 /venv/
