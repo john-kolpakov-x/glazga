@@ -13,9 +13,15 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import static java.util.concurrent.TimeUnit.MICROSECONDS;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class MainForm {
   public static void main(String[] args) {
@@ -24,7 +30,7 @@ public class MainForm {
 
   private void exec() {
 
-    Timer timer = new Timer();
+    ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
     GlazgaSettings glazgaSettings = new GlazgaSettings();
     PaintPanel paintPanel = new PaintPanel();
 
@@ -32,23 +38,9 @@ public class MainForm {
 
     final AtomicBoolean working = new AtomicBoolean(true);
 
-    f.addWindowListener(new WindowAdapter() {
-      @Override
-      public void windowClosed(WindowEvent e) {
-        working.set(false);
-        timer.cancel();
-      }
-
-      @Override
-      public void windowClosing(WindowEvent e) {
-        f.dispose();
-        working.set(false);
-      }
-    });
-
     f.addComponentListener(new ComponentAdapter() {
-      TimerTask tt = null;
       boolean skip = true;
+      ScheduledFuture<?> saver = null;
 
       @Override
       public void componentMoved(ComponentEvent e) {
@@ -56,15 +48,11 @@ public class MainForm {
           skip = false;
           return;
         }
-        if (tt != null) tt.cancel();
-        tt = new TimerTask() {
-          @Override
-          public void run() {
-            glazgaSettings.saveGameWindowLocation(e.getComponent().getLocation());
-          }
-        };
-        timer.schedule(tt, 100);
-
+        if (saver != null) saver.cancel(false);
+        saver = scheduler.schedule(
+          () -> glazgaSettings.saveGameWindowLocation(e.getComponent().getLocation()),
+          100, MILLISECONDS
+        );
       }
     });
 
@@ -83,10 +71,11 @@ public class MainForm {
 
     paintPanel.startPaint();
 
-    TimerTask drawTask = new TimerTask() {
+    ScheduledFuture<?> drawTask = scheduler.scheduleWithFixedDelay(new Runnable() {
       BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
       long startedAt = System.currentTimeMillis();
       long count = 0;
+      boolean justStarted = true;
 
       @Override
       public void run() {
@@ -126,10 +115,34 @@ public class MainForm {
 
           g.dispose();
         }
-        bufferStrategy.show();
-      }
-    };
 
-    timer.schedule(drawTask, 0, 16);
+        bufferStrategy.show();
+
+        if (justStarted && count > 200) {
+          count = 0;
+          justStarted = false;
+          startedAt = System.currentTimeMillis();
+        }
+      }
+    }, 0, 1000000 / 79, MICROSECONDS);
+
+    f.addWindowListener(new WindowAdapter() {
+      @Override
+      public void windowClosed(WindowEvent e) {
+        scheduler.shutdown();
+      }
+
+      @Override
+      public void windowClosing(WindowEvent e) {
+        working.set(false);
+        drawTask.cancel(false);
+        try {
+          drawTask.get();
+        } catch (InterruptedException | ExecutionException e1) {
+          throw new RuntimeException(e1);
+        } catch (CancellationException ignore) {}
+        f.dispose();
+      }
+    });
   }
 }

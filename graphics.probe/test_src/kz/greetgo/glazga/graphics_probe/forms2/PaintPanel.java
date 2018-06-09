@@ -72,6 +72,6 @@ public class PaintPanel {
 
     g.setColor(new Color(37, 32, 239));
 
-    display.paint(g, 100, 200 + offset);
+    display.paint(g, 100, 250 + offset);
   }
 }
