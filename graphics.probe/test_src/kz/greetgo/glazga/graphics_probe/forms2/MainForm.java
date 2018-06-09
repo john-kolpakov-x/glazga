@@ -32,6 +32,7 @@ public class MainForm {
       @Override
       public void windowClosed(WindowEvent e) {
         working.set(false);
+        timer.cancel();
       }
 
       @Override
@@ -96,6 +97,5 @@ public class MainForm {
       }
 
     }).start();
-
   }
 }
