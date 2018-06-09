@@ -1,5 +1,7 @@
 package kz.greetgo.glazga.graphics_probe.forms2;
 
+import kz.greetgo.glazga.graphics_probe.fonts.Fonts;
+
 import javax.swing.SwingUtilities;
 import java.awt.Canvas;
 import java.awt.Frame;
@@ -84,6 +86,7 @@ public class MainForm {
       while (working.get()) {
 
         Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
+        Fonts.get().applyHints(g);
         try {
           paintPanel.paint(g, canvas.getWidth(), canvas.getHeight());
         } finally {
