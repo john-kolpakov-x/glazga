@@ -2,24 +2,29 @@ package kz.greetgo.glazga.graphics_probe.forms2;
 
 import javax.swing.SwingUtilities;
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Frame;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class MultiBufferingWindow {
+public class MainForm {
   public static void main(String[] args) {
-    new MultiBufferingWindow().exec();
+    new MainForm().exec();
   }
 
   private void exec() {
 
-    Frame f = new Frame("glazga probes buffering paint");
-    f.setIgnoreRepaint(true);
+    Timer timer = new Timer();
+    GlazgaSettings glazgaSettings = new GlazgaSettings();
+    PaintPanel paintPanel = new PaintPanel();
+
+    Frame f = new Frame("glazga probes");
 
     final AtomicBoolean working = new AtomicBoolean(true);
 
@@ -36,13 +41,29 @@ public class MultiBufferingWindow {
       }
     });
 
-    Canvas canvas = new Canvas() {
+    f.addComponentListener(new ComponentAdapter() {
+      TimerTask tt = null;
+      boolean skip = true;
+
       @Override
-      public void paint(Graphics g) {
-//        super.paint(g);
+      public void componentMoved(ComponentEvent e) {
+        if (skip) {
+          skip = false;
+          return;
+        }
+        if (tt != null) tt.cancel();
+        tt = new TimerTask() {
+          @Override
+          public void run() {
+            glazgaSettings.saveGameWindowLocation(e.getComponent().getLocation());
+          }
+        };
+        timer.schedule(tt, 100);
+
       }
-    };
-    canvas.setIgnoreRepaint(true);
+    });
+
+    Canvas canvas = new Canvas();
     f.add(canvas);
     f.pack();
 
@@ -51,34 +72,22 @@ public class MultiBufferingWindow {
 
     SwingUtilities.invokeLater(() -> {
       f.setSize(1024, 600);
-      f.setLocation(4300, 100);
+      f.setLocation(glazgaSettings.loadGameWindowLocation());
       f.setVisible(true);
     });
 
-
-    long startedAt = System.currentTimeMillis();
-
     new Thread(() -> {
+
+      paintPanel.startPaint();
 
       while (working.get()) {
 
         Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
-
-        float seconds = (float) (System.currentTimeMillis() - startedAt) / 1000.0f;
-
-        int x = 10 + Math.round(seconds * 10f);
-
-        g.setColor(new Color(179, 199, 214));
-        g.fillRect(0, 0, canvas.getWidth() - 1, canvas.getHeight() - 1);
-
-        g.setColor(new Color(255, 36, 45));
-        g.drawLine(x, 10, 100, 100);
-
-        g.setColor(new Color(27, 182, 40));
-        g.drawRect(1, 1, canvas.getWidth() - 3, canvas.getHeight() - 3);
-
-        g.dispose();
-
+        try {
+          paintPanel.paint(g, canvas.getWidth(), canvas.getHeight());
+        } finally {
+          g.dispose();
+        }
         bufferStrategy.show();
 
         try {
