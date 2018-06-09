@@ -3,7 +3,6 @@ package kz.greetgo.glazga.graphics_probe.forms2;
 import javax.swing.SwingUtilities;
 import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.event.WindowAdapter;
@@ -14,13 +13,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class MultiBufferingWindow {
   public static void main(String[] args) {
     new MultiBufferingWindow().exec();
-  }
-
-  class WOW extends Canvas {
-    @Override
-    public Dimension getPreferredSize() {
-      return new Dimension(200, 200);
-    }
   }
 
   private void exec() {
@@ -42,12 +34,12 @@ public class MultiBufferingWindow {
       }
     });
 
-    WOW wow = new WOW();
-    f.add(wow);
+    Canvas canvas = new Canvas();
+    f.add(canvas);
     f.pack();
 
-    wow.createBufferStrategy(2);
-    BufferStrategy bufferStrategy = wow.getBufferStrategy();
+    canvas.createBufferStrategy(2);
+    BufferStrategy bufferStrategy = canvas.getBufferStrategy();
 
     SwingUtilities.invokeLater(() -> {
       f.setSize(1024, 600);
@@ -70,12 +62,14 @@ public class MultiBufferingWindow {
 
         int x = 10 + Math.round(seconds * 10f);
 
+        g.setColor(new Color(179, 199, 214));
+        g.fillRect(0, 0, canvas.getWidth() - 1, canvas.getHeight() - 1);
 
         g.setColor(new Color(255, 36, 45));
         g.drawLine(x, 10, 100, 100);
 
         g.setColor(new Color(27, 182, 40));
-        g.drawRect(1, 1, wow.getWidth() - 3, wow.getHeight() - 3);
+        g.drawRect(1, 1, canvas.getWidth() - 3, canvas.getHeight() - 3);
 
         g.dispose();
 
