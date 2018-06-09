@@ -81,49 +81,55 @@ public class MainForm {
       f.setVisible(true);
     });
 
-    new Thread(() -> {
+    paintPanel.startPaint();
 
-      paintPanel.startPaint();
-
+    TimerTask drawTask = new TimerTask() {
       BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-      image.getType();
+      long startedAt = System.currentTimeMillis();
+      long count = 0;
 
-      while (working.get()) {
-
+      @Override
+      public void run() {
         int width = canvas.getWidth();
         int height = canvas.getHeight();
-        if (width > 1 && height > 1) {
+        if (width < 1) return;
+        if (height < 1) return;
 
-          if (image.getWidth() != width || image.getHeight() != height) {
-            image = new BufferedImage(width, height, image.getType());
-            System.out.println("Changed image size to " + width + "x" + height);
-          }
+        if (image.getWidth() != width || image.getHeight() != height) {
+          image = new BufferedImage(width, height, image.getType());
+          System.out.println("Changed image size to " + width + "x" + height);
+        }
 
-          {
-            Graphics2D g = image.createGraphics();
-            Fonts.get().applyHints(g);
-            g.setColor(new Color(180, 180, 180));
-            g.fillRect(0, 0, width, height);
-            try {
-              paintPanel.paint(g, canvas.getWidth(), canvas.getHeight());
-            } finally {
-              g.dispose();
-            }
-          }
-
-          {
-            Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
-            g.drawImage(image, 0, 0, null);
+        {
+          Graphics2D g = image.createGraphics();
+          Fonts.get().applyHints(g);
+          g.setColor(new Color(180, 180, 180));
+          g.fillRect(0, 0, width, height);
+          try {
+            paintPanel.paint(g, canvas.getWidth(), canvas.getHeight());
+          } finally {
             g.dispose();
           }
-          bufferStrategy.show();
-
         }
-        try {
-          Thread.sleep(1000 / 24);
-        } catch (InterruptedException ignore) {}
-      }
 
-    }).start();
+        {
+          Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
+          g.drawImage(image, 0, 0, null);
+          count++;
+
+          long millis = System.currentTimeMillis() - startedAt;
+          if (millis > 0) {
+            int fps = (int) Math.round((double) count / (double) millis * 1000.0);
+            g.setColor(new Color(255, 255, 255));
+            g.drawString("FPS " + fps + " : " + count, 3, 11);
+          }
+
+          g.dispose();
+        }
+        bufferStrategy.show();
+      }
+    };
+
+    timer.schedule(drawTask, 0, 16);
   }
 }

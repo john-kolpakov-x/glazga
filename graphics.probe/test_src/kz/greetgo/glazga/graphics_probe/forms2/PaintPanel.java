@@ -54,8 +54,10 @@ public class PaintPanel {
     operation = mainPlus;
   }
 
-  public void startPaint() {
+  long startedAt;
 
+  public void startPaint() {
+    startedAt = System.currentTimeMillis();
   }
 
   public void paint(Graphics2D g, int width, int height) {
@@ -64,7 +66,12 @@ public class PaintPanel {
 
     Display display = operation.buildDisplay(displayBuilder);
 
+    double seconds = (double) (System.currentTimeMillis() - startedAt) / 1000.0;
+
+    int offset = (int) Math.round(100 * Math.sin(seconds));
+
     g.setColor(new Color(37, 32, 239));
-    display.paint(g, 100, 100);
+
+    display.paint(g, 100, 200 + offset);
   }
 }
