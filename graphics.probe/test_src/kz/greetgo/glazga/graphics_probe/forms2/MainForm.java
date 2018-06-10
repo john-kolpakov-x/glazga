@@ -5,8 +5,10 @@ import kz.greetgo.glazga.graphics_probe.fonts.Fonts;
 import javax.swing.SwingUtilities;
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
@@ -29,44 +31,61 @@ public class MainForm {
   }
 
   private void exec() {
+    String windowName = getClass().getSimpleName();
 
     ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
     GlazgaSettings glazgaSettings = new GlazgaSettings();
     PaintPanel paintPanel = new PaintPanel();
 
-    Frame f = new Frame("glazga probes");
+    Frame window = new Frame("glazga probes");
+    window.setUndecorated(false);
+    AtomicBoolean skipSizeSaving = new AtomicBoolean(true);
 
     final AtomicBoolean working = new AtomicBoolean(true);
 
-    f.addComponentListener(new ComponentAdapter() {
-      boolean skip = true;
-      ScheduledFuture<?> saver = null;
+    window.addComponentListener(new ComponentAdapter() {
+      boolean skipMoved = true;
+      ScheduledFuture<?> moveSaver = null;
 
       @Override
       public void componentMoved(ComponentEvent e) {
-        if (skip) {
-          skip = false;
+        if (skipMoved) {
+          skipMoved = false;
           return;
         }
-        if (saver != null) saver.cancel(false);
-        saver = scheduler.schedule(
-          () -> glazgaSettings.saveGameWindowLocation(e.getComponent().getLocation()),
+        if (moveSaver != null) moveSaver.cancel(false);
+        moveSaver = scheduler.schedule(
+          () -> glazgaSettings.saveWindowLocation(windowName, e.getComponent().getLocation()),
+          100, MILLISECONDS
+        );
+      }
+
+      ScheduledFuture<?> sizeSaver = null;
+
+      @Override
+      public void componentResized(ComponentEvent e) {
+        if (skipSizeSaving.get()) return;
+        if (sizeSaver != null) sizeSaver.cancel(false);
+        sizeSaver = scheduler.schedule(
+          () -> glazgaSettings.saveWindowSize(windowName, e.getComponent().getSize()),
           100, MILLISECONDS
         );
       }
     });
 
     Canvas canvas = new Canvas();
-    f.add(canvas);
-    f.pack();
+    window.add(canvas);
+    window.pack();
 
     canvas.createBufferStrategy(2);
     BufferStrategy bufferStrategy = canvas.getBufferStrategy();
 
     SwingUtilities.invokeLater(() -> {
-      f.setSize(1024, 600);
-      f.setLocation(glazgaSettings.loadGameWindowLocation());
-      f.setVisible(true);
+      window.setSize(glazgaSettings.loadWindowSize(getClass().getSimpleName(), new Dimension(1024, 600)));
+      window.setLocation(glazgaSettings.loadWindowLocation(getClass().getSimpleName(), new Point(100, 100)));
+      window.setVisible(true);
+
+      scheduler.schedule(() -> skipSizeSaving.set(false), 100, MILLISECONDS);
     });
 
     paintPanel.startPaint();
@@ -86,7 +105,6 @@ public class MainForm {
 
         if (image.getWidth() != width || image.getHeight() != height) {
           image = new BufferedImage(width, height, image.getType());
-          System.out.println("Changed image size to " + width + "x" + height);
         }
 
         {
@@ -126,7 +144,7 @@ public class MainForm {
       }
     }, 0, 1000000 / 79, MICROSECONDS);
 
-    f.addWindowListener(new WindowAdapter() {
+    window.addWindowListener(new WindowAdapter() {
       @Override
       public void windowClosed(WindowEvent e) {
         scheduler.shutdown();
@@ -141,7 +159,7 @@ public class MainForm {
         } catch (InterruptedException | ExecutionException e1) {
           throw new RuntimeException(e1);
         } catch (CancellationException ignore) {}
-        f.dispose();
+        window.dispose();
       }
     });
   }
