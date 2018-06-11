@@ -35,7 +35,7 @@ public class DisplayBuilder {
 
   private static final Display NONE = new Display() {
     @Override
-    public void paint(Graphics2D g, float x, float y) { }
+    public void paint(Graphics2D g, float x, float y) {}
 
     @Override
     public FigArea area() {
@@ -85,5 +85,10 @@ public class DisplayBuilder {
 
   public Display brackets(Display in, Bracket bracket) {
     return brackets(in, bracket, Function.identity());
+  }
+
+
+  public RamaBuilder rama() {
+    return new RamaBuilder(this);
   }
 }

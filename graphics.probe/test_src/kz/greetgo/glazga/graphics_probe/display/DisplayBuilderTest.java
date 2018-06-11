@@ -3,6 +3,7 @@ package kz.greetgo.glazga.graphics_probe.display;
 import kz.greetgo.glazga.graphics_probe.fonts.Fonts;
 import kz.greetgo.glazga.graphics_probe.metric.Bracket;
 import kz.greetgo.glazga.graphics_probe.metric.DrawMetric;
+import kz.greetgo.glazga.graphics_probe.model.FigArea;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -176,6 +177,54 @@ public class DisplayBuilderTest {
     }
 
     File file = new File("build/" + getClass().getSimpleName() + "_brackets.png");
+    file.getParentFile().mkdirs();
+    ImageIO.write(image, "png", file);
+  }
+
+  @Test
+  public void rama() throws Exception {
+    DisplayBuilder builder = new DisplayBuilder(drawMetric).baseHeight(() -> 80);
+
+    BufferedImage image = new BufferedImage(1000, 700, BufferedImage.TYPE_INT_ARGB);
+
+    {
+      Graphics2D g = image.createGraphics();
+      Fonts.get().applyHints(g);
+
+      g.setColor(new Color(0xD6D7D9));
+      g.fill(new Rectangle2D.Float(0, 0, image.getWidth(), image.getHeight()));
+
+      g.setColor(new Color(0x3636FF));
+
+      Display a1 = builder.area(new FigArea(100, 50, 50), Function.identity());
+      Display a2 = builder.area(new FigArea(70, 50, 70), Function.identity());
+      Display a3 = builder.area(new FigArea(130, 60, 30), Function.identity());
+      Display a4 = builder.area(new FigArea(100, 50, 50), Function.identity());
+      Display a5 = builder.area(new FigArea(10, 20, 20), Function.identity());
+
+      a1.paint(g, 30, 170);
+      a2.paint(g, 200, 170);
+      a3.paint(g, 370, 170);
+      a4.paint(g, 540, 170);
+
+      Display display = builder.rama()
+        .window(a1, colorSetter(new Color(124, 79, 255)))
+        .window(a2, colorSetter(new Color(124, 79, 255)))
+        .window(a3, colorSetter(new Color(124, 79, 255)))
+        .window(a4, colorSetter(new Color(124, 79, 255)))
+        .window(a5, colorSetter(new Color(158, 162, 41)))
+        .setBorderPreparatory(colorSetter(new Color(203, 12, 18)))
+        .build();
+
+      display.paint(g, 30, 320);
+
+//      g.setColor(new Color(0x1BC5C4));
+//      builder.structure(display).paint(g, 30, 320);//+17);
+
+      g.dispose();
+    }
+
+    File file = new File("build/" + getClass().getSimpleName() + "_rama.png");
     file.getParentFile().mkdirs();
     ImageIO.write(image, "png", file);
   }

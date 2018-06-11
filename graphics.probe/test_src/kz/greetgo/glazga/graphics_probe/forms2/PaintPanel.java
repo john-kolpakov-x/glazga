@@ -3,6 +3,7 @@ package kz.greetgo.glazga.graphics_probe.forms2;
 import kz.greetgo.glazga.graphics_probe.display.Display;
 import kz.greetgo.glazga.graphics_probe.display.DisplayBuilder;
 import kz.greetgo.glazga.graphics_probe.fonts.Fonts;
+import kz.greetgo.glazga.graphics_probe.forms2.model.Assignment;
 import kz.greetgo.glazga.graphics_probe.forms2.model.Operation;
 import kz.greetgo.glazga.graphics_probe.forms2.model.OperationDiv;
 import kz.greetgo.glazga.graphics_probe.forms2.model.OperationMinus;
@@ -13,18 +14,22 @@ import kz.greetgo.glazga.graphics_probe.metric.DrawMetric;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 
 public class PaintPanel {
 
 
+  @SuppressWarnings("FieldCanBeLocal")
   private DrawMetric drawMetric;
   private DisplayBuilder displayBuilder;
 
   Operation operation;
 
+  Assignment assignment;
+
   public PaintPanel() {
     drawMetric = Fonts.With.Merriweather_Light.drawMetric();
-    displayBuilder = new DisplayBuilder(drawMetric).baseHeight(() -> 80);
+    displayBuilder = new DisplayBuilder(drawMetric).baseHeight(() -> 30);
 
     OperationReadVar varHello = new OperationReadVar();
     varHello.varName = "hello";
@@ -52,26 +57,31 @@ public class PaintPanel {
     mainPlus.right = div;
 
     operation = mainPlus;
+
+    assignment = new Assignment();
+    assignment.type = "Str";
+    assignment.varName = "radius";
+    assignment.operation = mainPlus;
+    assignment.position = new Point(100, 100);
   }
 
-  long startedAt;
 
-  public void startPaint() {
-    startedAt = System.currentTimeMillis();
-  }
+  public void startPaint() {}
 
   public void paint(Graphics2D g, int width, int height) {
     g.setColor(new Color(239, 12, 19));
     g.drawLine(10, 100, 100, 10);
 
-    Display display = operation.buildDisplay(displayBuilder);
+    {
+      Display display = operation.buildDisplay(displayBuilder);
+      g.setColor(new Color(37, 32, 239));
+      display.paint(g, 100, 250);
+    }
 
-    double seconds = (double) (System.currentTimeMillis() - startedAt) / 1000.0;
-
-    int offset = (int) Math.round(100 * Math.sin(seconds));
-
-    g.setColor(new Color(37, 32, 239));
-
-    display.paint(g, 100, 250 + offset);
+    {
+      Display display = assignment.buildDisplay(displayBuilder);
+      g.setColor(new Color(35, 195, 29));
+      display.paint(g, assignment.position.x, assignment.position.y);
+    }
   }
 }
