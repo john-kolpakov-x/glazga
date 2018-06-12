@@ -29,8 +29,13 @@ public class DisplayBuilder {
     return new _DisplayLetter(c, level, baseHeight, drawMetric);
   }
 
-  public Display row(Display left, Display right) {
-    return new _DisplayRow(left, right);
+  public Display row(Display... displays) {
+    Display ret = null;
+    for (Display display : displays) {
+      if (ret == null) ret = display;
+      else ret = new _DisplayRow(ret, display);
+    }
+    return ret == null ? none() : ret;
   }
 
   private static final Display NONE = new Display() {

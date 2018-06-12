@@ -56,7 +56,7 @@ public class DrawBracketProbe {
       g.dispose();
     }
 
-    File outputFile = new File("build/DrawBracketProbe.png");
+    File outputFile = new File("create/DrawBracketProbe.png");
     outputFile.getParentFile().mkdirs();
     ImageIO.write(image, "png", outputFile);
   }

@@ -46,7 +46,7 @@ public class DisplayBuilderTest {
       g.dispose();
     }
 
-    File file = new File("build/" + getClass().getSimpleName() + "_str_" + str + ".png");
+    File file = new File("create/" + getClass().getSimpleName() + "_str_" + str + ".png");
     file.getParentFile().mkdirs();
     ImageIO.write(image, "png", file);
   }
@@ -82,7 +82,7 @@ public class DisplayBuilderTest {
       g.dispose();
     }
 
-    File file = new File("build/" + getClass().getSimpleName() + "_div.png");
+    File file = new File("create/" + getClass().getSimpleName() + "_div.png");
     file.getParentFile().mkdirs();
     ImageIO.write(image, "png", file);
   }
@@ -123,7 +123,7 @@ public class DisplayBuilderTest {
       g.dispose();
     }
 
-    File file = new File("build/" + getClass().getSimpleName() + "_power.png");
+    File file = new File("create/" + getClass().getSimpleName() + "_power.png");
     file.getParentFile().mkdirs();
     ImageIO.write(image, "png", file);
   }
@@ -176,7 +176,7 @@ public class DisplayBuilderTest {
       g.dispose();
     }
 
-    File file = new File("build/" + getClass().getSimpleName() + "_brackets.png");
+    File file = new File("create/" + getClass().getSimpleName() + "_brackets.png");
     file.getParentFile().mkdirs();
     ImageIO.write(image, "png", file);
   }
@@ -185,7 +185,7 @@ public class DisplayBuilderTest {
   public void rama() throws Exception {
     DisplayBuilder builder = new DisplayBuilder(drawMetric).baseHeight(() -> 80);
 
-    BufferedImage image = new BufferedImage(1000, 700, BufferedImage.TYPE_INT_ARGB);
+    BufferedImage image = new BufferedImage(1500, 700, BufferedImage.TYPE_INT_ARGB);
 
     {
       Graphics2D g = image.createGraphics();
@@ -201,25 +201,63 @@ public class DisplayBuilderTest {
       Display a3 = builder.area(new FigArea(130, 60, 30), Function.identity());
       Display a4 = builder.area(new FigArea(100, 50, 50), Function.identity());
       Display a5 = builder.area(new FigArea(10, 20, 20), Function.identity());
+      Display a6 = builder.str("Hi", 1);
 
-      a1.paint(g, 30, 170);
-      a2.paint(g, 200, 170);
-      a3.paint(g, 370, 170);
-      a4.paint(g, 540, 170);
 
-      Display display = builder.rama()
-        .window(a1, colorSetter(new Color(124, 79, 255)))
-        .window(a2, colorSetter(new Color(124, 79, 255)))
-        .window(a3, colorSetter(new Color(124, 79, 255)))
-        .window(a4, colorSetter(new Color(124, 79, 255)))
-        .window(a5, colorSetter(new Color(158, 162, 41)))
-        .setBorderPreparatory(colorSetter(new Color(203, 12, 18)))
-        .build();
+      {
+        Display display = builder.rama()
+          .window(a1, colorSetter(new Color(124, 79, 255)))
+          .window(a6, colorSetter(new Color(158, 162, 41)))
+          .window(a2, colorSetter(new Color(124, 79, 255)))
+          .window(a3, colorSetter(new Color(124, 79, 255)))
+          .window(a4, colorSetter(new Color(124, 79, 255)))
+          .window(a5, colorSetter(new Color(158, 162, 41)))
+          .setBorderPreparatory(colorSetter(new Color(203, 12, 18)))
+          .create();
 
-      display.paint(g, 30, 320);
+        display.paint(g, 30, 90);
 
 //      g.setColor(new Color(0x1BC5C4));
 //      builder.structure(display).paint(g, 30, 320);//+17);
+      }
+
+      Display _1 = builder.str("1", 1);
+      Display _2 = builder.str("2", 2);
+      Display _a = builder.str("a", 1);
+      Display _b = builder.str("b", 1);
+      Display _a2 = builder.power(_a).right(1, 0.5f, _2).create();
+      Display _b2 = builder.power(_b).right(1, 0.5f, _2).create();
+      Display space = builder.str(" ", 1);
+      Display plus = builder.str("+", 1);
+      Display minus = builder.str("-", 1);
+
+      Display bottom1 = builder.row(_a2, plus, _b2);
+      Display _a_plus_b = builder.brackets(builder.row(_a, plus, _b), Bracket.PARENTHESIS);
+      Display bottom2 = builder.power(_a_plus_b).right(1, 0.5f, _2).create();
+
+      Display _a_minus_b = builder.brackets(builder.row(_a, minus, _b), Bracket.PARENTHESIS);
+      Display bottom3 = builder.power(_a_minus_b).right(1, 0.5f, _2).create();
+
+      Display div1 = builder.div(_1, bottom1, 1);
+      Display div2 = builder.div(_1, bottom2, 1);
+      Display div3 = builder.div(_1, bottom3, 1);
+
+      Display b1 = builder.str(" float ", 1);
+      Display b2 = builder.str(" x ", 1);
+      Display b3 = builder.str("←", 1);
+      Display b4 = builder.row(space, div1, plus, div2, plus, div3, space);
+
+      {
+        Display display = builder.rama()
+          .window(b1, colorSetter(new Color(124, 79, 255)))
+          .window(b2, colorSetter(new Color(124, 79, 255)))
+          .window(b3, colorSetter(new Color(124, 79, 255)))
+          .window(b4, colorSetter(new Color(124, 79, 255)))
+          .setBorderPreparatory(colorSetter(new Color(203, 12, 18)))
+          .create();
+
+        display.paint(g, 30, 300);
+      }
 
       g.dispose();
     }

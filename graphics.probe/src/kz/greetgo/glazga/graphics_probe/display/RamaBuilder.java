@@ -27,7 +27,7 @@ public class RamaBuilder {
   RamaBuilder(DisplayBuilder parent) {}
 
   private void check() {
-    if (built) throw new RuntimeException("Cannot use builder after build");
+    if (built) throw new RuntimeException("Cannot use builder after create");
   }
 
   public RamaBuilder window(Display display, Function<Graphics2D, Graphics2D> gp) {
@@ -47,7 +47,7 @@ public class RamaBuilder {
 
   private boolean built = false;
 
-  public Display build() {
+  public Display create() {
     built = true;
     return new Display() {
       @Override

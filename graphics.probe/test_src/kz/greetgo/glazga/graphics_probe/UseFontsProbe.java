@@ -117,7 +117,7 @@ public class UseFontsProbe {
     }
 
 
-    File outputFile = new File("build/UseFontsProbe.png");
+    File outputFile = new File("create/UseFontsProbe.png");
     outputFile.getParentFile().mkdirs();
     ImageIO.write(image, "png", outputFile);
   }
