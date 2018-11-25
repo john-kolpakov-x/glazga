@@ -96,4 +96,8 @@ public class DisplayFactory {
   public RamaBuilder rama() {
     return new RamaBuilder(this);
   }
+
+  public RadicalBuilder radical(Display radical) {
+    return new RadicalBuilder(radical);
+  }
 }
