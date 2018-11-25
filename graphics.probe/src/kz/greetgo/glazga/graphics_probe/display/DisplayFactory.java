@@ -9,17 +9,17 @@ import java.awt.Graphics2D;
 import java.util.Objects;
 import java.util.function.Function;
 
-public class DisplayBuilder {
+public class DisplayFactory {
   private final DrawMetric drawMetric;
   private FloatSupplier baseHeight;
 
-  public DisplayBuilder(DrawMetric drawMetric) {
+  public DisplayFactory(DrawMetric drawMetric) {
     Objects.requireNonNull(drawMetric, "drawMetric == null");
     this.drawMetric = drawMetric;
     this.baseHeight = () -> 14f;
   }
 
-  public DisplayBuilder baseHeight(FloatSupplier baseHeight) {
+  public DisplayFactory baseHeight(FloatSupplier baseHeight) {
     Objects.requireNonNull(baseHeight, "baseHeight == null");
     this.baseHeight = baseHeight;
     return this;

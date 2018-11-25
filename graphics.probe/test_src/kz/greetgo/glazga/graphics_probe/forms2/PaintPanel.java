@@ -1,7 +1,7 @@
 package kz.greetgo.glazga.graphics_probe.forms2;
 
 import kz.greetgo.glazga.graphics_probe.display.Display;
-import kz.greetgo.glazga.graphics_probe.display.DisplayBuilder;
+import kz.greetgo.glazga.graphics_probe.display.DisplayFactory;
 import kz.greetgo.glazga.graphics_probe.fonts.Fonts;
 import kz.greetgo.glazga.graphics_probe.forms2.model.Assignment;
 import kz.greetgo.glazga.graphics_probe.forms2.model.Operation;
@@ -21,7 +21,7 @@ public class PaintPanel {
 
   @SuppressWarnings("FieldCanBeLocal")
   private DrawMetric drawMetric;
-  private DisplayBuilder displayBuilder;
+  private DisplayFactory displayFactory;
 
   Operation operation;
 
@@ -29,7 +29,7 @@ public class PaintPanel {
 
   public PaintPanel() {
     drawMetric = Fonts.With.Merriweather_Light.drawMetric();
-    displayBuilder = new DisplayBuilder(drawMetric).baseHeight(() -> 30);
+    displayFactory = new DisplayFactory(drawMetric).baseHeight(() -> 30);
 
     OperationReadVar varHello = new OperationReadVar();
     varHello.varName = "hello";
@@ -73,13 +73,13 @@ public class PaintPanel {
     g.drawLine(10, 100, 100, 10);
 
     {
-      Display display = operation.buildDisplay(displayBuilder);
+      Display display = operation.buildDisplay(displayFactory);
       g.setColor(new Color(37, 32, 239));
       display.paint(g, 100, 250);
     }
 
     {
-      Display display = assignment.buildDisplay(displayBuilder);
+      Display display = assignment.buildDisplay(displayFactory);
       g.setColor(new Color(35, 195, 29));
       display.paint(g, assignment.position.x, assignment.position.y);
     }

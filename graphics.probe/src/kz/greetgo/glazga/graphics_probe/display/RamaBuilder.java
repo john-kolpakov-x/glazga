@@ -24,7 +24,7 @@ public class RamaBuilder {
   private final List<Window> windowList = new ArrayList<>();
 
   @SuppressWarnings("unused")
-  RamaBuilder(DisplayBuilder parent) {}
+  RamaBuilder(DisplayFactory parent) {}
 
   private void check() {
     if (built) throw new RuntimeException("Cannot use builder after create");

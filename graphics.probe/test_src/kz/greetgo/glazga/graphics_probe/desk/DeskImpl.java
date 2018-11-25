@@ -3,7 +3,7 @@ package kz.greetgo.glazga.graphics_probe.desk;
 import kz.greetgo.glazga.graphics_probe.desk.tag.Doc;
 import kz.greetgo.glazga.graphics_probe.desk.tag.DocReader;
 import kz.greetgo.glazga.graphics_probe.display.Display;
-import kz.greetgo.glazga.graphics_probe.display.DisplayBuilder;
+import kz.greetgo.glazga.graphics_probe.display.DisplayFactory;
 import kz.greetgo.glazga.graphics_probe.fonts.Fonts;
 import kz.greetgo.glazga.graphics_probe.metric.DrawMetric;
 
@@ -15,7 +15,7 @@ import java.util.List;
 public class DeskImpl implements Desk {
 
   final DrawMetric drawMetric = Fonts.With.Merriweather_Light.drawMetric();
-  final DisplayBuilder builder = new DisplayBuilder(drawMetric).baseHeight(() -> 80);
+  final DisplayFactory builder = new DisplayFactory(drawMetric).baseHeight(() -> 80);
 
   final Doc doc = DocReader.read(getClass().getResourceAsStream("DeskImpl.tags.txt"));
 

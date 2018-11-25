@@ -15,7 +15,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.function.Function;
 
-public class DisplayBuilderTest {
+public class DisplayFactoryTest {
 
   private DrawMetric drawMetric;
 
@@ -26,7 +26,7 @@ public class DisplayBuilderTest {
 
   @Test
   public void str() throws Exception {
-    DisplayBuilder builder = new DisplayBuilder(drawMetric).baseHeight(() -> 80);
+    DisplayFactory builder = new DisplayFactory(drawMetric).baseHeight(() -> 80);
 
 
     BufferedImage image = new BufferedImage(1000, 700, BufferedImage.TYPE_INT_ARGB);
@@ -53,7 +53,7 @@ public class DisplayBuilderTest {
 
   @Test
   public void div() throws Exception {
-    DisplayBuilder builder = new DisplayBuilder(drawMetric).baseHeight(() -> 80);
+    DisplayFactory builder = new DisplayFactory(drawMetric).baseHeight(() -> 80);
 
     BufferedImage image = new BufferedImage(1000, 700, BufferedImage.TYPE_INT_ARGB);
 
@@ -89,7 +89,7 @@ public class DisplayBuilderTest {
 
   @Test
   public void power() throws Exception {
-    DisplayBuilder builder = new DisplayBuilder(drawMetric).baseHeight(() -> 80);
+    DisplayFactory builder = new DisplayFactory(drawMetric).baseHeight(() -> 80);
 
     BufferedImage image = new BufferedImage(1000, 700, BufferedImage.TYPE_INT_ARGB);
 
@@ -144,7 +144,7 @@ public class DisplayBuilderTest {
 
   @Test
   public void brackets() throws Exception {
-    DisplayBuilder builder = new DisplayBuilder(drawMetric).baseHeight(() -> 80);
+    DisplayFactory builder = new DisplayFactory(drawMetric).baseHeight(() -> 80);
 
     BufferedImage image = new BufferedImage(1000, 700, BufferedImage.TYPE_INT_ARGB);
 
@@ -183,7 +183,7 @@ public class DisplayBuilderTest {
 
   @Test
   public void rama() throws Exception {
-    DisplayBuilder builder = new DisplayBuilder(drawMetric).baseHeight(() -> 80);
+    DisplayFactory builder = new DisplayFactory(drawMetric).baseHeight(() -> 80);
 
     BufferedImage image = new BufferedImage(1500, 700, BufferedImage.TYPE_INT_ARGB);
 
@@ -268,7 +268,7 @@ public class DisplayBuilderTest {
 
   @Test
   public void radical() throws Exception {
-    DisplayBuilder builder = new DisplayBuilder(drawMetric).baseHeight(() -> 80);
+    DisplayFactory builder = new DisplayFactory(drawMetric).baseHeight(() -> 80);
 
     BufferedImage image = new BufferedImage(1500, 700, BufferedImage.TYPE_INT_ARGB);
 
