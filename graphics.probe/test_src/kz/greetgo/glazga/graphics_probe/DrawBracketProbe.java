@@ -5,6 +5,7 @@ import kz.greetgo.glazga.graphics_probe.metric.Bracket;
 import kz.greetgo.glazga.graphics_probe.metric.DrawMetric;
 import kz.greetgo.glazga.graphics_probe.model.FigArea;
 import kz.greetgo.glazga.graphics_probe.util.DrawUtil;
+import org.testng.annotations.Test;
 
 import javax.imageio.ImageIO;
 import java.awt.Color;
@@ -14,16 +15,15 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-import static kz.greetgo.glazga.graphics_probe.metric.Bracket.*;
+import static kz.greetgo.glazga.graphics_probe.metric.Bracket.CURLY;
+import static kz.greetgo.glazga.graphics_probe.metric.Bracket.PARENTHESIS;
+import static kz.greetgo.glazga.graphics_probe.metric.Bracket.SQUARE;
 import static kz.greetgo.glazga.graphics_probe.metric.BracketSide.LEFT;
 import static kz.greetgo.glazga.graphics_probe.metric.BracketSide.RIGHT;
 
 public class DrawBracketProbe {
-  public static void main(String[] args) throws Exception {
-    new DrawBracketProbe().run();
-  }
-
-  private void run() throws Exception {
+  @Test
+  public void drawBracketProbe() throws Exception {
     BufferedImage image = new BufferedImage(1000, 550, BufferedImage.TYPE_INT_ARGB);
 
     {
@@ -34,7 +34,6 @@ public class DrawBracketProbe {
 
       Rectangle2D r = new Rectangle2D.Float(0, 0, image.getWidth(), image.getHeight());
       g.fill(r);
-
 
       {
         g.setColor(new Color(5, 5, 5));
@@ -56,12 +55,11 @@ public class DrawBracketProbe {
       g.dispose();
     }
 
-    File outputFile = new File("create/DrawBracketProbe.png");
+    File outputFile = new File("build/DrawBracketProbe.png");
     outputFile.getParentFile().mkdirs();
     ImageIO.write(image, "png", outputFile);
   }
 
-  @SuppressWarnings("UnnecessaryLocalVariable")
   private void paintBracketsAround(Graphics2D g, FigArea area, float x, float y, Bracket br) {
     drawFigAreaBounds(g, area, x, y);
     DrawUtil.point(g, x, y, 2);
@@ -80,8 +78,6 @@ public class DrawBracketProbe {
 
     g.fill(shapeLeft);
     g.fill(shapeRight);
-
-
   }
 
   @SuppressWarnings("SameParameterValue")

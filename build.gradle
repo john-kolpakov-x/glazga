@@ -7,7 +7,7 @@ allprojects {
   apply plugin: 'java'
   apply plugin: 'idea'
   apply plugin: 'maven'
-  
+
   version = '0.0.1'
 
   sourceCompatibility = 1.8
@@ -15,27 +15,25 @@ allprojects {
 
   group = "kz.greetgo.glazga"
 
-
   compileJava.options.debugOptions.debugLevel = "source,lines,vars"
   compileJava.options.encoding = "UTF-8"
   compileTestJava.options.debugOptions.debugLevel = "source,lines,vars"
   compileTestJava.options.encoding = "UTF-8"
-
 }
 
 subprojects {
-
-
   repositories {
     mavenLocal()
     if (ggRepo != null && ggRepo.length() > 0) maven { url ggRepo }
     mavenCentral()
   }
-  
+
   dependencies {
+    ext.testNgVersion = '6.14.3'
+
     compile 'org.slf4j:slf4j-api:1.7.22'
-    
-    testCompile 'org.testng:testng:6.5.1'
+
+    testCompile "org.testng:testng:$testNgVersion"
     testCompile 'org.easytesting:fest-assert-core:2.0M10'
   }
 
@@ -44,9 +42,9 @@ subprojects {
 
   jar {
     manifest {
-      attributes 'Implementation-Title': project.name
-      attributes 'Implementation-Version': version
-      attributes 'Implementation-Vendor': vendorName
+      attributes 'Specification-Title': project.name
+      attributes 'Specification-Version': version
+      attributes 'Specification-Vendor': vendorName
       attributes 'Created-By': System.getProperty("user.name")
       attributes 'Created-At': nowFormattedDate
     }
@@ -54,6 +52,7 @@ subprojects {
 
   test.useTestNG()
 
+  idea.module.downloadSources = true
   idea.module.inheritOutputDirs = false
   idea.module.outputDir = file("$buildDir/classes/main/")
   idea.module.testOutputDir = file("$buildDir/classes/test/")

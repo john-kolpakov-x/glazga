@@ -22,7 +22,7 @@ public class Fonts {
   }
 
   private enum WithType {
-    TTF_1;
+    TTF_1
   }
 
   @SuppressWarnings("unused")

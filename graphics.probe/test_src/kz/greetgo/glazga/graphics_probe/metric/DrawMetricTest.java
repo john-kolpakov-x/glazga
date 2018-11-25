@@ -23,7 +23,7 @@ public class DrawMetricTest {
   private DrawMetric drawMetric;
 
   @BeforeMethod
-  public void create_drawMetric() throws Exception {
+  public void create_drawMetric() {
     drawMetric = Fonts.With.Merriweather_Light.drawMetric();
   }
 
@@ -60,7 +60,7 @@ public class DrawMetricTest {
       g.dispose();
     }
 
-    File file = new File("create/DrawMetricTest_letterShapeArea_" + c + ".png");
+    File file = new File("build/DrawMetricTest_letterShapeArea_" + c + ".png");
     file.getParentFile().mkdirs();
     ImageIO.write(image, "png", file);
   }
@@ -128,7 +128,7 @@ public class DrawMetricTest {
       g.dispose();
     }
 
-    File file = new File("create/DrawMetricTest_writeStr_" + str + ".png");
+    File file = new File("build/DrawMetricTest_writeStr_" + str + ".png");
     file.getParentFile().mkdirs();
     ImageIO.write(image, "png", file);
   }

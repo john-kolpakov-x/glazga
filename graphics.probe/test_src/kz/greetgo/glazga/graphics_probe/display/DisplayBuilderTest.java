@@ -46,7 +46,7 @@ public class DisplayBuilderTest {
       g.dispose();
     }
 
-    File file = new File("create/" + getClass().getSimpleName() + "_str_" + str + ".png");
+    File file = new File("build/" + getClass().getSimpleName() + "_str_" + str + ".png");
     file.getParentFile().mkdirs();
     ImageIO.write(image, "png", file);
   }
@@ -82,7 +82,7 @@ public class DisplayBuilderTest {
       g.dispose();
     }
 
-    File file = new File("create/" + getClass().getSimpleName() + "_div.png");
+    File file = new File("build/" + getClass().getSimpleName() + "_div.png");
     file.getParentFile().mkdirs();
     ImageIO.write(image, "png", file);
   }
@@ -123,7 +123,7 @@ public class DisplayBuilderTest {
       g.dispose();
     }
 
-    File file = new File("create/" + getClass().getSimpleName() + "_power.png");
+    File file = new File("build/" + getClass().getSimpleName() + "_power.png");
     file.getParentFile().mkdirs();
     ImageIO.write(image, "png", file);
   }
@@ -176,7 +176,7 @@ public class DisplayBuilderTest {
       g.dispose();
     }
 
-    File file = new File("create/" + getClass().getSimpleName() + "_brackets.png");
+    File file = new File("build/" + getClass().getSimpleName() + "_brackets.png");
     file.getParentFile().mkdirs();
     ImageIO.write(image, "png", file);
   }
@@ -202,7 +202,6 @@ public class DisplayBuilderTest {
       Display a4 = builder.area(new FigArea(100, 50, 50), Function.identity());
       Display a5 = builder.area(new FigArea(10, 20, 20), Function.identity());
       Display a6 = builder.str("Hi", 1);
-
 
       {
         Display display = builder.rama()
@@ -263,6 +262,33 @@ public class DisplayBuilderTest {
     }
 
     File file = new File("build/" + getClass().getSimpleName() + "_rama.png");
+    file.getParentFile().mkdirs();
+    ImageIO.write(image, "png", file);
+  }
+
+  @Test
+  public void radical() throws Exception {
+    DisplayBuilder builder = new DisplayBuilder(drawMetric).baseHeight(() -> 80);
+
+    BufferedImage image = new BufferedImage(1500, 700, BufferedImage.TYPE_INT_ARGB);
+
+    {
+      Graphics2D g = image.createGraphics();
+      Fonts.get().applyHints(g);
+
+      g.setColor(new Color(0xD6D7D9));
+      g.fill(new Rectangle2D.Float(0, 0, image.getWidth(), image.getHeight()));
+
+      Display main = builder.area(80, 75, 25, colorSetter(new Color(0x3636FF)));
+      Display power = builder.area(40, 37, 12, colorSetter(new Color(0x218329)));
+
+      main.paint(g, 10, 100);
+      power.paint(g, 10, 300);
+
+      g.dispose();
+    }
+
+    File file = new File("build/" + getClass().getSimpleName() + "_radical.png");
     file.getParentFile().mkdirs();
     ImageIO.write(image, "png", file);
   }

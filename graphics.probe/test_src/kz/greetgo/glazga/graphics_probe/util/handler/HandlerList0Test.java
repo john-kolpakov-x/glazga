@@ -13,7 +13,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 public class HandlerList0Test {
   @Test
-  public void test_detach_first() throws Exception {
+  public void test_detach_first() {
     HandlerList0<String> handlerList = new HandlerList0<>();
 
     Detaching asd = handlerList.attach("asd");
@@ -31,7 +31,7 @@ public class HandlerList0Test {
   }
 
   @Test
-  public void test_detach_second() throws Exception {
+  public void test_detach_second() {
     HandlerList0<String> handlerList = new HandlerList0<>();
 
     Detaching asd = handlerList.attach("asd");
