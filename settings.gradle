@@ -1,3 +1,4 @@
 rootProject.name = 'glazga'
 
 include "graphics.probe"
+include "lwjgl.probe"

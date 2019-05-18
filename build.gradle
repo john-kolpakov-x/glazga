@@ -26,6 +26,10 @@ subprojects {
     mavenLocal()
     if (ggRepo != null && ggRepo.length() > 0) maven { url ggRepo }
     mavenCentral()
+
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+    maven { url 'http://maven-eclipse.github.io/maven' }
+    maven { url 'http://repo.maven.apache.org/maven2' }
   }
 
   dependencies {
