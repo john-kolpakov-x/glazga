@@ -114,11 +114,32 @@ public class HelloWorld {
 
     // Set the clear color
     GL11.glClearColor(0.0f, 1.0f, 0.0f, 0.0f);
+    GL11.glMatrixMode(GL11.GL_PROJECTION);
+    GL11.glLoadIdentity();
+    GL11.glOrtho(-3.2, 3.2, -2.4, 2.4, -1, 1);
+    GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
     // Run the rendering loop until the user has attempted to close
     // the window or has pressed the ESCAPE key.
     while (!GLFW.glfwWindowShouldClose(window)) {
       GL11.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+
+
+      // Begin drawing
+      GL11.glBegin(GL11.GL_TRIANGLES);
+      // Top & Red
+      GL11.glColor3f(1.0f, 0.0f, 0.0f);
+      GL11.glVertex2f(0.0f, 1.0f);
+
+      // Right & Green
+      GL11.glColor3f(0.0f, 1.0f, 0.0f);
+      GL11.glVertex2f(1.0f, 1.0f);
+
+      // Left & Blue
+      GL11.glColor3f(0.0f, 0.0f, 1.0f);
+      GL11.glVertex2f(1.0f, -1.0f);
+      GL11.glEnd();
+
 
       GLFW.glfwSwapBuffers(window); // swap the color buffers
 
