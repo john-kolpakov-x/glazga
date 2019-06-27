@@ -45,5 +45,6 @@ dependencies {
   compile "org.lwjgl:lwjgl-assimp:${lwjglVersion}:natives-${platform}"
   compile "org.lwjgl:lwjgl-shaderc:${lwjglVersion}:natives-${platform}"
 
+  compile files(getRootDir().toPath().resolve('libs/slick-util/slick-util-237.jar'))
 
 }
